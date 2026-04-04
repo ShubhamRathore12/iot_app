@@ -375,7 +375,7 @@ export const GTPL_139_TAGS = [
 ];
 
 export const S7_200_MACHINES = [
-  "GTPL-118-gT-80E-P-S7-200",
+  "GTPL-118-gT-60T-S7-200",
   "GTPL-108-gT-40E-P-S7-200",
   "GTPL-109-gT-40E-P-S7-200",
   "GTPL-110-gT-40E-P-S7-200",

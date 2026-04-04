@@ -1,5 +1,8 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 // API service for handling authentication and other API calls
-const BASE_URL = 'https://grain-backend-1.onrender.com'; // Provided API URL
+const BASE_URL = 'http://localhost:3000'; 
+const COOKIES_KEY = 'api_cookies';
 
 interface LoginCredentials {
   username: string;
@@ -36,6 +39,7 @@ export interface DeviceStatus {
 
 class ApiService {
   private baseUrl: string;
+  private cookies: string = '';
 
   constructor() {
     this.baseUrl = BASE_URL;
@@ -46,14 +50,49 @@ class ApiService {
     this.baseUrl = url;
   }
 
+  // Store cookies from Set-Cookie response headers
+  private async extractAndStoreCookies(response: Response) {
+    const setCookie = response.headers.get('set-cookie');
+    if (setCookie) {
+      // Parse cookie names and values (strip attributes like Path, HttpOnly, etc.)
+      const cookieParts = setCookie.split(',').map((c) => {
+        const nameValue = c.trim().split(';')[0];
+        return nameValue;
+      }).filter(Boolean);
+      this.cookies = cookieParts.join('; ');
+      console.log('Cookies stored:', this.cookies);
+      // Persist to AsyncStorage for app restart
+      try { await AsyncStorage.setItem(COOKIES_KEY, this.cookies); } catch (e) { /* ignore */ }
+    }
+  }
+
+  // Restore cookies from storage (call on app startup)
+  async restoreCookies() {
+    try {
+      const stored = await AsyncStorage.getItem(COOKIES_KEY);
+      if (stored) this.cookies = stored;
+    } catch (e) { /* ignore */ }
+  }
+
+  // Clear cookies on logout
+  async clearCookies() {
+    this.cookies = '';
+    try { await AsyncStorage.removeItem(COOKIES_KEY); } catch (e) { /* ignore */ }
+  }
+
   // Helper method to create headers
-  private getHeaders(token?: string) {
+  private getHeaders(token?: string, { includeCookies = true }: { includeCookies?: boolean } = {}) {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     };
 
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    // Attach cookies to every request (except login which sets them)
+    if (includeCookies && this.cookies) {
+      headers['Cookie'] = this.cookies;
     }
 
     return headers;
@@ -65,7 +104,7 @@ class ApiService {
     try {
       const response = await fetch(`${this.baseUrl}/api/login`, {
         method: 'POST',
-        headers: this.getHeaders(),
+        headers: this.getHeaders(undefined, { includeCookies: false }),
         body: JSON.stringify({
           username: credentials.username, // Using email field in credentials
           password: credentials.password,
@@ -77,6 +116,9 @@ class ApiService {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       }
+
+      // Capture cookies from login response
+      await this.extractAndStoreCookies(response);
 
       const data: LoginResponse = await response.json();
       console.log('API Service: Login response data:', data);
@@ -100,6 +142,8 @@ class ApiService {
       }
     } catch (error) {
       console.error('Logout API error:', error);
+    } finally {
+      this.clearCookies();
     }
   }
 

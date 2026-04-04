@@ -307,7 +307,7 @@ export const MACHINE_HMI_CONFIG: Record<string, MachineHMIConfig> = {
   },
 
   // ── S7-200 Machines ────────────────────────────────────────────────────
-  "GTPL-118-gT-80E-P-S7-200": {
+  "GTPL-118-gT-60T-S7-200": {
     serialNumber: "GTPL_118",
     temperatureSensors: S7_200_TEMP_SENSORS,
     controls: S7_200_CONTROLS,
@@ -570,7 +570,7 @@ export const AUTO_CR_VALVE_DEVICES = [
 ];
 
 export const S7_200_MACHINES = [
-  "GTPL-118-gT-80E-P-S7-200",
+  "GTPL-118-gT-60T-S7-200",
   "GTPL-108-gT-40E-P-S7-200",
   "GTPL-109-gT-40E-P-S7-200",
   "GTPL-110-gT-40E-P-S7-200",

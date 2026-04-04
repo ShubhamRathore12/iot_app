@@ -125,10 +125,27 @@ const TAB_ICONS: Record<string, (props: { color: string; size: number }) => Reac
 
 function AnimatedTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const tokens = useThemeTokens();
+  const auth = useContext(AuthContext);
+  const ma = auth?.monitorAccess || [];
+  const maLower = ma.map((a: string) => a.toLowerCase());
+  const hasRestrictions = ma.length > 0;
+  const hasMachine = maLower.some((a: string) => a.startsWith('gtpl-'));
+
+  // Filter out hidden tabs based on monitorAccess whitelist (match dashboard logic)
+  const visibleRoutes = hasRestrictions
+    ? state.routes.filter((route) => {
+        const name = route.name;
+        if (name === 'devices') return hasMachine;
+        if (name === 'registration-form') return maLower.includes('registration');
+        if (name === 'contact') return maLower.includes('contact') || maLower.includes('contacts');
+        return maLower.includes(name.toLowerCase());
+      })
+    : state.routes;
 
   return (
     <View style={[styles.tabBar, { backgroundColor: tokens.colors.surface, borderTopColor: tokens.colors.border }]}>
-      {state.routes.map((route, index) => {
+      {visibleRoutes.map((route) => {
+        const index = state.routes.indexOf(route);
         const { options } = descriptors[route.key];
         const label = (options.tabBarLabel ?? options.title ?? route.name) as string;
         const isFocused = state.index === index;
@@ -250,10 +267,16 @@ export default function TabLayout() {
 
   const { logout, monitorAccess } = auth;
 
-  // Check if a tab should be hidden based on monitorAccess blacklist
+  // Whitelist: if monitorAccess is non-empty, only show tabs whose name is in the list
+  // "devices" tab always shows if any machine name is present in the list
+  const accessLower = (monitorAccess || []).map((a: string) => a.toLowerCase());
+  const hasMachineAccess = accessLower.some((a: string) => a.startsWith('gtpl-'));
   const isTabHidden = (name: string) => {
-    if (!monitorAccess || monitorAccess.length === 0) return false;
-    return monitorAccess.includes(name.toLowerCase());
+    if (!monitorAccess || monitorAccess.length === 0) return false; // no restrictions
+    if (name === 'devices') return !hasMachineAccess;
+    if (name === 'registration' || name === 'registration-form') return !accessLower.includes('registration');
+    if (name === 'contact') return !accessLower.includes('contact') && !accessLower.includes('contacts');
+    return !accessLower.includes(name.toLowerCase());
   };
 
   const handleLogout = async () => {

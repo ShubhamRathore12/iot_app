@@ -11,6 +11,7 @@ import SplashScreen from '@/components/splash-screen';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { I18nProvider } from '@/i18n';
 import { AuthProvider } from '@/providers/auth';
+import { MachineStatusProvider } from '@/providers/machine-status';
 import { ThemeProviderCustom, useThemeMode } from '@/providers/theme';
 
 export const unstable_settings = {
@@ -77,7 +78,9 @@ export default function RootLayout() {
         <I18nProvider>
           <ThemeProviderCustom>
             <AuthProvider>
-              <AppWithSplash />
+              <MachineStatusProvider>
+                <AppWithSplash />
+              </MachineStatusProvider>
             </AuthProvider>
           </ThemeProviderCustom>
         </I18nProvider>

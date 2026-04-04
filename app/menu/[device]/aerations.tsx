@@ -35,7 +35,7 @@ const DUAL_AERATION_DEVICES = [
     "GTPL-111-gT-80E-P-S7-200",
     "GTPL-112-gT-80E-P-S7-200",
     "GTPL-113-gT-80E-P-S7-200",
-    "GTPL-118-gT-80E-P-S7-200"
+    "GTPL-118-gT-60T-S7-200"
 ];
 
 // List of devices that should show heaters

@@ -6,9 +6,8 @@ import {
   AlertCircle,
   CalendarDays,
   ChevronDown,
-  Download,
   FileText,
-  X,
+  X
 } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
 import {
@@ -37,7 +36,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const BASE_URL = 'https://grain-backend-1.onrender.com';
 
 const allDevices = [
-  'GTPL-122-gT-1000T-S7-1200', 'GTPL-118-gT-80E-P-S7-200', 'GTPL-108-gT-40E-P-S7-200',
+  'GTPL-122-gT-1000T-S7-1200', 'GTPL-118-gT-60T-S7-200', 'GTPL-108-gT-40E-P-S7-200',
   'GTPL-109-gT-40E-P-S7-200', 'GTPL-110-gT-40E-P-S7-200', 'GTPL-111-gT-80E-P-S7-200',
   'GTPL-112-gT-80E-P-S7-200', 'GTPL-113-gT-80E-P-S7-200', 'GTPL-30-gT-180E-S7-1200',
   'GTPL-115-gT-180E-S7-1200', 'GTPL-116-gT-240E-S7-1200', 'GTPL-117-gT-320E-S7-1200',
@@ -66,7 +65,7 @@ const DEVICE_TO_TABLE_MAP: Record<string, string> = {
   'GTPL-124-GT-450T-S7-1200': 'GTPL_124_GT_450T_S7_1200',
   'GTPL-133-GT-650T-S7-1200': 'GTPL_131_GT_650T_S7_1200',
   'GTPL-132-300-AP-S7-1200': 'GTPL_132_GT300AP',
-  'GTPL-118-gT-80E-P-S7-200': 'kabomachinedatasmart200',
+  'GTPL-118-gT-60T-S7-200': 'kabomachinedatasmart200',
   'GTPL-137-GT-450T-S7-1200': 'GTPL_137_GT_450T_S7_1200',
   'GTPL-138-GT-450T-S7-1200': 'GTPL_138_GT_450T_S7_1200',
   'GTPL-061-gT-450T-S7-1200': 'GTPL_061_GT_450T_S7_1200',
@@ -434,7 +433,7 @@ export default function ReportsScreen() {
               <Text style={styles.actionBtnText}>Apply Filter</Text>
             )}
           </ActionBtn>
-          <ActionBtn
+          {/* <ActionBtn
             onPress={downloadAllData}
             disabled={!startDate || !endDate || downloading}
             style={[styles.actionBtn, { backgroundColor: tokens.colors.accent }]}
@@ -447,7 +446,7 @@ export default function ReportsScreen() {
                 <Text style={styles.actionBtnText}>Download</Text>
               </View>
             )}
-          </ActionBtn>
+          </ActionBtn> */}
         </Animated.View>
 
         {/* Progress */}

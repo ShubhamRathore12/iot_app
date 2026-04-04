@@ -68,7 +68,7 @@ const locationOptions = [
 
 const monitorOptions = [
   'Devices', 'Contacts', 'Reports', 'Manufacturer', 'Customer', 'Registration',
-  'GTPL-122-gT-1000T-S7-1200', 'GTPL-118-gT-80E-P-S7-200', 'GTPL-108-gT-40E-P-S7-200',
+  'GTPL-122-gT-1000T-S7-1200', 'GTPL-118-gT-60T-S7-200', 'GTPL-108-gT-40E-P-S7-200',
   'GTPL-109-gT-40E-P-S7-200', 'GTPL-110-gT-40E-P-S7-200', 'GTPL-111-gT-80E-P-S7-200',
   'GTPL-112-gT-80E-P-S7-200', 'GTPL-113-gT-80E-P-S7-200', 'GTPL-30-gT-180E-S7-1200',
   'GTPL-115-gT-180E-S7-1200', 'GTPL-116-gT-240E-S7-1200', 'GTPL-117-gT-320E-S7-1200',

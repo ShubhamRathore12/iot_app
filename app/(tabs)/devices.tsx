@@ -1,7 +1,7 @@
 import AnimatedButton from '@/components/ui/animated-button';
 import AnimatedCard from '@/components/ui/animated-card';
 import AnimatedText from '@/components/ui/animated-text';
-import { useMachineStatusFeed } from '@/hooks/use-machinestatus-feed';
+import { useMachineStatus } from '@/providers/machine-status';
 import { useI18n } from '@/i18n';
 import { useAuth } from '@/providers/auth';
 import { useThemeTokens } from '@/providers/theme';
@@ -73,7 +73,7 @@ const allDevices: Device[] = [
   { id: '9', name: 'GTPL-115-gT-180E-S7-1200', type: 'chiller', model: 'gT-180E', location: 'Germany', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-180E', status: 'active', internetStatus: true, coolingStatus: true },
   { id: '10', name: 'GTPL-116-gT-240E-S7-1200', type: 'chiller', model: 'gT-240E', location: 'Germany', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-240E', status: 'active', internetStatus: true, coolingStatus: true },
   { id: '11', name: 'GTPL-117-gT-320E-S7-1200', type: 'chiller', model: 'gT-320E', location: 'Germany', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-320E', status: 'active', internetStatus: true, coolingStatus: true },
-  { id: '12', name: 'GTPL-118-gT-80E-P-S7-200', type: 'chiller', model: 'gT-80E-P', location: 'Noida', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-200', chillerModel: 'gT-80E-P', status: 'active', internetStatus: true, coolingStatus: false },
+  { id: '12', name: 'GTPL-118-gT-60T-S7-200', type: 'chiller', model: 'gT-80E-P', location: 'Telangana', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-200', chillerModel: 'gT-80E-P', status: 'active', internetStatus: true, coolingStatus: false },
   { id: '13', name: 'GTPL-119-gT-180E-S7-1200', type: 'chiller', model: 'gT-180E', location: 'Germany', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-180E', status: 'active', internetStatus: true, coolingStatus: true },
   { id: '14', name: 'GTPL-120-gT-180E-S7-1200', type: 'chiller', model: 'gT-180E', location: 'Germany', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-180E', status: 'active', internetStatus: true, coolingStatus: true },
   { id: '15', name: 'GTPL-121-gT-1000T-S7-1200', type: 'chiller', model: 'gT-1000T', location: 'kanpur', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-1000T', status: 'active', internetStatus: true, coolingStatus: false },
@@ -81,25 +81,26 @@ const allDevices: Device[] = [
   { id: '17', name: 'GTPL-124-GT-450T-S7-1200', type: 'chiller', model: 'gT-240E', location: 'Indonesia', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-240E', status: 'active', internetStatus: false, coolingStatus: true },
   { id: '18', name: 'GTPL-133-GT-650T-S7-1200', type: 'chiller', model: 'GT-650T', location: 'Vietnam', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'GT-650T', status: 'inactive', internetStatus: false, coolingStatus: false },
   { id: '19', name: 'GTPL-132-300-AP-S7-1200', type: 'chiller', model: 'gT-240E', location: 'Salem (Tamil Nadu)', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-240E', status: 'active', internetStatus: true, coolingStatus: true },
-  { id: '20', name: 'GTPL-134-gT-450T-S7-1200', type: 'chiller', model: 'gT-450T', location: 'Kakinda (AP)', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-450T', status: 'active', internetStatus: true, coolingStatus: false },
+  { id: '20', name: 'GTPL-134-gT-450T-S7-1200', type: 'chiller', model: 'gT-450T', location: 'Kakinada (AP)', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-450T', status: 'active', internetStatus: true, coolingStatus: false },
   { id: '21', name: 'GTPL-135-gT-450T-S7-1200', type: 'chiller', model: 'gT-450T', location: 'Bihar', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-450T', status: 'active', internetStatus: true, coolingStatus: true },
   { id: '22', name: 'GTPL-136-gT-450AP', type: 'chiller', model: 'gT-450AP', location: 'Srilanka', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-450AP', status: 'active', internetStatus: true, coolingStatus: true },
   { id: '23', name: 'GTPL-137-GT-450T-S7-1200', type: 'chiller', model: 'gT-240E', location: 'Thailand', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-240E', status: 'active', internetStatus: false, coolingStatus: false },
   { id: '24', name: 'GTPL-138-GT-450T-S7-1200', type: 'chiller', model: 'gT-240E', location: 'Thailand', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-240E', status: 'active', internetStatus: true, coolingStatus: true },
-  { id: '25', name: 'GTPL-139-GT-300AP-S7-1200', type: 'chiller', model: 'GT-300AP', location: 'Puducherry', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'GT-300AP', status: 'active', internetStatus: true, coolingStatus: true },
-  { id: '26', name: 'GTPL-142-gT-450AP-S7-1200', type: 'chiller', model: 'gT-450AP', location: 'Andhra Pradesh', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-450AP', status: 'inactive', internetStatus: false, coolingStatus: false },
-  { id: '27', name: 'GTPL-143-gT-450AP-S7-1200', type: 'chiller', model: 'gT-450AP', location: 'Andhra Pradesh', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-450AP', status: 'active', internetStatus: true, coolingStatus: true },
-  { id: '28', name: 'GTPL-123-GT-450AP', type: 'chiller', model: 'GT-450AP', location: 'Richur, Karnataka', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'GT-450AP', status: 'active', internetStatus: true, coolingStatus: true },
+  { id: '25', name: 'GTPL-139-GT-300AP-S7-1200', type: 'chiller', model: 'GT-300AP', location: 'Pondicherry', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'GT-300AP', status: 'active', internetStatus: true, coolingStatus: true },
+  { id: '26', name: 'GTPL-142-gT-450AP-S7-1200', type: 'chiller', model: 'gT-450AP', location: 'A.P.', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-450AP', status: 'inactive', internetStatus: false, coolingStatus: false },
+  { id: '27', name: 'GTPL-143-gT-450AP-S7-1200', type: 'chiller', model: 'gT-450AP', location: 'A.P.', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-450AP', status: 'active', internetStatus: true, coolingStatus: true },
+  { id: '28', name: 'GTPL-123-GT-450AP', type: 'chiller', model: 'GT-450AP', location: 'Raichur, Karnataka', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'GT-450AP', status: 'active', internetStatus: true, coolingStatus: true },
   { id: '29', name: 'GTPL-145-GT-450T-S7-1200', type: 'chiller', model: 'gT-450T', location: 'Tamil Nadu', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-450T', status: 'active', internetStatus: true, coolingStatus: true },
   { id: '30', name: 'GTPL-148-GT-450T-S7-1200', type: 'chiller', model: 'gT-450T', location: 'Kakinada, Andhra Pradesh', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'gT-450T', status: 'active', internetStatus: true, coolingStatus: true },
   { id: '31', name: 'GTPL-131-GT-650T-S7-1200', type: 'chiller', model: 'GT-650T', location: 'Ganganagar, Rajasthan', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'GT-650T', status: 'active', internetStatus: true, coolingStatus: true },
+  { id: '32', name: 'GTPL-144-GT-300AP-S7-1200', type: 'chiller', model: 'GT-300AP', location: 'Tamil Nadu', image: 'https://imgtolinkx.com/i/tyDruPH0', plc: 'S7-1200', chillerModel: 'GT-300AP', status: 'active', internetStatus: true, coolingStatus: true },
 ];
 
-const locations = ['All', ...[...new Set(allDevices.map((d) => d.location))].sort()];
+// locations are now computed dynamically inside the component based on monitorAccess
 
 const deviceNameToStatusKey: Record<string, string> = {
   'GTPL-122-gT-1000T-S7-1200': 'GTPL_122_S7_1200',
-  'GTPL-118-gT-80E-P-S7-200': 'KABO_200',
+  'GTPL-118-gT-60T-S7-200': 'KABO_200',
   'GTPL-108-gT-40E-P-S7-200': 'GTPL_108',
   'GTPL-109-gT-40E-P-S7-200': 'GTPL_109',
   'GTPL-110-gT-40E-P-S7-200': 'GTPL_110',
@@ -129,6 +130,7 @@ const deviceNameToStatusKey: Record<string, string> = {
   'GTPL-123-GT-450AP': 'GTPL_123',
   'GTPL-145-GT-450T-S7-1200': 'GTPL_145',
   'GTPL-148-GT-450T-S7-1200': 'GTPL_148',
+  'GTPL-144-GT-300AP-S7-1200': 'GTPL_144',
 };
 
 // ─── Pulsing Status Dot ──────────────────────────────────────────────
@@ -293,11 +295,21 @@ export default function DevicesScreen() {
   const { t } = useI18n();
   const { monitorAccess } = useAuth();
 
-  const { status: machineStatus, error: statusError, refresh: refreshStatus } = useMachineStatusFeed();
+  const { status: machineStatus, error: statusError, refresh: refreshStatus } = useMachineStatus();
   const [statusLoading, setStatusLoading] = useState(true);
   const deviceStatuses = machineStatus?.machines || [];
   const [selectedLocation, setSelectedLocation] = useState('All');
   const [showFilters, setShowFilters] = useState(false);
+
+  // Derive locations from whitelisted devices only
+  const accessibleDevices = useMemo(() => {
+    if (monitorAccess.length === 0) return allDevices;
+    const accessLower = monitorAccess.map((a) => a.toLowerCase());
+    return allDevices.filter((d) => accessLower.includes(d.name.toLowerCase()));
+  }, [monitorAccess]);
+  const locations = useMemo(() => {
+    return ['All', ...[...new Set(accessibleDevices.map((d) => d.location))].sort()];
+  }, [accessibleDevices]);
 
   useEffect(() => {
     if (deviceStatuses.length > 0) setStatusLoading(false);
@@ -328,11 +340,12 @@ export default function DevicesScreen() {
   }, [deviceStatuses]);
 
   const filteredDevices = useMemo(() => {
-    // Filter out devices blacklisted in monitorAccess (if empty, show all)
+    // Whitelist: only show devices listed in monitorAccess (if empty, show all)
     let devices = devicesWithStatus;
     if (monitorAccess.length > 0) {
+      const accessLower = monitorAccess.map((a) => a.toLowerCase());
       devices = devices.filter(
-        (d) => !monitorAccess.includes(d.name.toLowerCase())
+        (d) => accessLower.includes(d.name.toLowerCase())
       );
     }
     if (selectedLocation === 'All') return devices;

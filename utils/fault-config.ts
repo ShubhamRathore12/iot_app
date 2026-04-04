@@ -390,7 +390,7 @@ interface MachineConfig {
 // Machine configuration mapping
 export const MACHINE_CONFIG: Record<string, MachineConfig> = {
   // S7-200
-  "GTPL-118-gT-80E-P-S7-200": {
+  "GTPL-118-gT-60T-S7-200": {
     table: "kabomachinedatasmart200",
     tags: S7_200_TAGS,
     type: "S7-200",

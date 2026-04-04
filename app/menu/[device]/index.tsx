@@ -3,7 +3,6 @@ import { ThemedView } from '@/components/themed-view';
 import AnimatedIcon from '@/components/ui/animated-icon';
 import { STAGGER_DELAY } from '@/constants/animation-config';
 import { useI18n } from '@/i18n';
-import { useAuth } from '@/providers/auth';
 import { useThemeMode } from '@/providers/theme';
 import { mediumHaptic } from '@/utils/haptic-utils';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -57,7 +56,6 @@ export default function DeviceMenuScreen() {
     const router = useRouter();
     const { effective } = useThemeMode();
     const { t } = useI18n();
-    const { monitorAccess } = useAuth();
     const insets = useSafeAreaInsets();
     const params = useLocalSearchParams<{ device: string; deviceData: string; status: string }>();
 
@@ -180,15 +178,7 @@ export default function DeviceMenuScreen() {
         }
     };
 
-    const allMenuItems = getMenuItems();
-    // Filter out menu items blacklisted in monitorAccess (match path or title)
-    const menuItems = monitorAccess.length > 0
-        ? allMenuItems.filter((item) => {
-            const pathMatch = monitorAccess.includes(item.path.toLowerCase());
-            const titleMatch = monitorAccess.includes(item.title.toLowerCase());
-            return !pathMatch && !titleMatch;
-        })
-        : allMenuItems;
+    const menuItems = getMenuItems();
     const [itemAnims] = useState(() => menuItems.map(() => new Animated.Value(0)));
 
     useEffect(() => {

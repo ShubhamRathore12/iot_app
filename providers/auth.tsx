@@ -72,10 +72,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true); // Start with loading true
 
-  // Parse monitorAccess from user data into a lowercase array (blacklist)
+  // Parse monitorAccess from user data into an array (whitelist — only listed items are shown; "0"/empty/null = show all)
   const monitorAccess = React.useMemo(() => {
     if (!user?.monitorAccess || typeof user.monitorAccess !== 'string') return [];
-    return user.monitorAccess.split(',').map((item) => item.trim().toLowerCase()).filter(Boolean);
+    const raw = user.monitorAccess.trim();
+    if (raw === '0' || raw === '') return [];
+    return raw.split(',').map((item) => item.trim()).filter(Boolean);
   }, [user?.monitorAccess]);
 
   const getFullLoginResponse = async () => {
@@ -95,7 +97,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const checkAuthStatus = async () => {
     try {
       console.log('Checking auth status...');
-      
+
+      // Restore cookies from storage for authenticated API calls
+      await apiService.restoreCookies();
+
       // Get token and user data safely
       const token = await safeGetItem<string | null>(AUTH_TOKEN_KEY, null);
       const userData = await safeGetItem<any>(USER_DATA_KEY, null);
@@ -192,15 +197,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Note: No validate token API available
       // Proceed with local logout only
 
-      // Clear stored data
+      // Clear stored data and cookies
       await AsyncStorage.multiRemove([AUTH_TOKEN_KEY, USER_DATA_KEY]);
+      await apiService.clearCookies();
 
       setIsAuthenticated(false);
       setUser(null);
     } catch (error) {
       console.error('Logout error:', error);
-      // Clear local storage
+      // Clear local storage and cookies
       await AsyncStorage.multiRemove([AUTH_TOKEN_KEY, USER_DATA_KEY]);
+      await apiService.clearCookies();
       setIsAuthenticated(false);
       setUser(null);
     }

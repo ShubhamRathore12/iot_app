@@ -1,14 +1,14 @@
 import { apiRequest } from "@/lib/api";
 import { AUTO_TYPE_TO_TABLE_MAP, DEVICE_NAME_TO_STATUS_KEY } from "@/constants/machine-config";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useMachineStatusFeed } from "./use-machinestatus-feed";
+import { useMachineStatus } from "@/providers/machine-status";
 
 interface AutoData {
   [key: string]: any;
 }
 
 export const useAutoData = (autoType: string) => {
-  const { status } = useMachineStatusFeed();
+  const { status } = useMachineStatus();
 
   const [data, setData] = useState<AutoData | null>(null);
   const [isConnected, setIsConnected] = useState(false);

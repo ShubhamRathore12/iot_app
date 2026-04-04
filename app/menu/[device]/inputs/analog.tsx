@@ -70,6 +70,34 @@ const GTPL_132_config = {
     },
 };
 
+// E-series machines (115/30/119/120/116/117) with Heater output
+const GTPL_30_config = {
+    displayName: "S7-1200 E-Series",
+    inputs: sharedS7_1200_config.inputs,
+    outputs: {
+        ...sharedS7_1200_config.outputs,
+        "Heater": "Heater_speed",
+    },
+};
+
+// GTPL-118 (60T S7-200) separate config
+const GTPL_118_config = {
+    displayName: "GTPL-118 Machine",
+    inputs: {
+        "Suction Pressure": "LP_value",
+        "Discharge Pressure": "HP_value",
+        "T2.1 Ambient Temp": "T2_ambient_temp",
+        "T1.1 Cold Temp": "T1_cold_air_temp",
+        "T0.1 Air Outlet Temp": "T0_air_outlet_temp",
+    },
+    outputs: {
+        "Blower Speed": "Blower_speed",
+        "Condenser fan speed": "Condenser_fan_speed",
+        "Hot Gas Valve": "Hot_valve_speed",
+        "Afterheat Valve": "AHT_valve_speed",
+    },
+};
+
 const GTPL_061_config = {
     displayName: "GTPL-061 Machine",
     inputs: {
@@ -127,12 +155,13 @@ const GTPL_136_config = {
 };
 
 const machineConfigs: Record<string, { inputs: Record<string, string>; outputs: Record<string, string>; displayName: string }> = {
-    "GTPL-115-gT-180E-S7-1200": sharedS7_1200_config,
-    "GTPL-30-gT-180E-S7-1200": sharedS7_1200_config,
-    "GTPL-119-gT-180E-S7-1200": sharedS7_1200_config,
-    "GTPL-120-gT-180E-S7-1200": sharedS7_1200_config,
-    "GTPL-116-gT-240E-S7-1200": sharedS7_1200_config,
-    "GTPL-117-gT-320E-S7-1200": sharedS7_1200_config,
+    "GTPL-115-gT-180E-S7-1200": GTPL_30_config,
+    "GTPL-30-gT-180E-S7-1200": GTPL_30_config,
+    "GTPL-119-gT-180E-S7-1200": GTPL_30_config,
+    "GTPL-120-gT-180E-S7-1200": GTPL_30_config,
+    "GTPL-116-gT-240E-S7-1200": GTPL_30_config,
+    "GTPL-117-gT-320E-S7-1200": GTPL_30_config,
+    "GTPL-118-gT-60T-S7-200": GTPL_118_config,
     "GTPL-124-GT-450T-S7-1200": sharedS7_1200_config,
     "GTPL-121-gT-1000T-S7-1200": sharedS7_1200_config,
     "GTPL-122-gT-1000T-S7-1200": sharedS7_1200_config,
@@ -150,6 +179,7 @@ const machineConfigs: Record<string, { inputs: Record<string, string>; outputs: 
     "GTPL-138-GT-450T-S7-1200": sharedS7_1200_config,
     "GTPL-061-gT-450T-S7-1200": GTPL_061_config,
     "GTPL-139-GT-300AP-S7-1200": sharedS7_1200_config,
+    "GTPL-144-GT-300AP-S7-1200": sharedS7_1200_config,
     "GTPL-148-GT-450T-S7-1200": sharedS7_1200_config,
     "default": {
         displayName: "Default Machine",

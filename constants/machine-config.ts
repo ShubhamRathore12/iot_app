@@ -406,7 +406,7 @@ export const GTPL_134_135_OUTPUT_TAGS = [
 // Machine configuration mapping
 export const MACHINE_CONFIG = {
   // S7-200
-  "GTPL-118-gT-80E-P-S7-200": {
+  "GTPL-118-gT-60T-S7-200": {
     table: "kabomachinedatasmart200",
     tags: S7_200_TAGS,
     type: "S7-200",
@@ -553,6 +553,11 @@ export const MACHINE_CONFIG = {
     tags: GTPL_139_TAGS,
     type: "S7-1200",
   },
+  "GTPL-144-GT-300AP-S7-1200": {
+    table: "GTPL_144_GT300AP",
+    tags: GTPL_139_TAGS,
+    type: "S7-1200",
+  },
   "GTPL-142-gT-450AP-S7-1200": {
     table: "GTPL_142_GT_450AP_S7_1200",
     tags: GPL_132_TAGS,
@@ -585,7 +590,7 @@ export const AUTO_TYPE_TO_TABLE_MAP: Record<string, string> = Object.fromEntries
 
 export const DEVICE_NAME_TO_STATUS_KEY: Record<string, string> = {
   "GTPL-122-gT-1000T-S7-1200": "GTPL_122_S7_1200",
-  "GTPL-118-gT-80E-P-S7-200": "KABO_200",
+  "GTPL-118-gT-60T-S7-200": "KABO_200",
   "GTPL-108-gT-40E-P-S7-200": "GTPL_108",
   "GTPL-109-gT-40E-P-S7-200": "GTPL_109",
   "GTPL-110-gT-40E-P-S7-200": "GTPL_110",
@@ -611,6 +616,7 @@ export const DEVICE_NAME_TO_STATUS_KEY: Record<string, string> = {
   "GTPL-135-gT-450T-S7-1200": "GTPL_135",
   "GTPL-061-gT-450T-S7-1200": "GTPL_061",
   "GTPL-139-GT-300AP-S7-1200": "GTPL_139",
+  "GTPL-144-GT-300AP-S7-1200": "GTPL_144",
   "GTPL-142-gT-450AP-S7-1200": "GTPL_142",
   "GTPL-143-gT-450AP-S7-1200": "GTPL_143",
   "GTPL-123-GT-450AP": "GTPL_123",
@@ -620,20 +626,21 @@ export const DEVICE_NAME_TO_STATUS_KEY: Record<string, string> = {
 
 // ─── Machine Location Mapping ────────────────────────────────────────────────
 export const MACHINE_LOCATIONS: Record<string, string> = {
-  "GTPL-118-gT-80E-P-S7-200": "Germany",
+  "GTPL-118-gT-60T-S7-200": "Telangana",
   "GTPL-108-gT-40E-P-S7-200": "Germany",
   "GTPL-109-gT-40E-P-S7-200": "Germany",
   "GTPL-110-gT-40E-P-S7-200": "Germany",
   "GTPL-111-gT-80E-P-S7-200": "Germany",
   "GTPL-112-gT-80E-P-S7-200": "Germany",
   "GTPL-113-gT-80E-P-S7-200": "Germany",
-  "GTPL-123-GT-450AP": "Richur, Karnataka",
+  "GTPL-123-GT-450AP": "Raichur, Karnataka",
   "GTPL-131-GT-650T-S7-1200": "Ganganagar, Rajasthan",
   "GTPL-133-GT-650T-S7-1200": "Vietnam",
   "GTPL-135-gT-450T-S7-1200": "Bihar",
-  "GTPL-139-GT-300AP-S7-1200": "Puducherry",
-  "GTPL-142-gT-450AP-S7-1200": "Andhra Pradesh",
-  "GTPL-143-gT-450AP-S7-1200": "Andhra Pradesh",
+  "GTPL-139-GT-300AP-S7-1200": "Pondicherry",
+  "GTPL-144-GT-300AP-S7-1200": "Tamil Nadu",
+  "GTPL-142-gT-450AP-S7-1200": "A.P.",
+  "GTPL-143-gT-450AP-S7-1200": "A.P.",
   "GTPL-145-GT-450T-S7-1200": "Tamil Nadu",
   "GTPL-148-GT-450T-S7-1200": "Kakinada, Andhra Pradesh",
 };

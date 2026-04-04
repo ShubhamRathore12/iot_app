@@ -32,7 +32,8 @@ export default function InputsScreen() {
     const { device } = useLocalSearchParams<{ device: string }>();
     const [mounted, setMounted] = useState(false);
 
-    const isGT80E = ['118', '108', '109', '110', '111', '112', '113'].some(code => device?.includes(code));
+    const isGTPL118 = device === "GTPL-118-gT-60T-S7-200";
+    const isGT80E = !isGTPL118 && ['108', '109', '110', '111', '112', '113'].some(code => device?.includes(code));
     const isGtpl122 = ['122', '121', '133', '131'].some(code => device?.includes(code));
     const isGtpl1200_02 = device === "Gtpl-S7-1200-02";
     const isGtpl115 = device === "GTPL-115-gT-180E-S7-1200" || device === "GTPL-30-gT-180E-S7-1200" || device === 'GTPL-119-gT-180E-S7-1200' || device === "GTPL-120-gT-180E-S7-1200";
@@ -45,6 +46,7 @@ export default function InputsScreen() {
     const isGTPL134_135 = device === "GTPL-134-gT-450T-S7-1200" || device === "GTPL-135-gT-450T-S7-1200" || device === "GTPL-145-GT-450T-S7-1200" || device === "GTPL-148-GT-450T-S7-1200";
     const isGTPL061 = device === "GTPL-061-gT-450T-S7-1200";
     const isGTPL139 = device === "GTPL-139-GT-300AP-S7-1200";
+    const isGTPL144 = device === "GTPL-144-GT-300AP-S7-1200";
 
     const { data } = useAutoData(device as string);
 
@@ -61,6 +63,21 @@ export default function InputsScreen() {
         }
         return false;
     };
+
+    const gtpl_118_faultStatus = [
+        { id: "I0.0", description: "Compressor circuit breaker", status: data?.Compressor_circuit_breaker_I0_0 },
+        { id: "I0.1", description: "Compressor overheat", status: data?.Compressor_overheat_I0_1 },
+        { id: "I0.2", description: "Compressor in operation", status: data?.Compressor_in_operation_I0_2 },
+        { id: "I0.3", description: "Blower drive fault", status: data?.Blower_drive_fault_I0_3 },
+        { id: "I0.4", description: "Blower drive in operation", status: data?.Blower_drive_in_operation_I0_4 },
+        { id: "I0.5", description: "Blower circuit breaker", status: data?.Blower_circuit_breaker_I0_5 },
+        { id: "I0.6", description: "Condenser fan TOP fault", status: data?.Condenser_fan_TOP_fault_I0_6 },
+        { id: "I0.7", description: "Condenser fan circuit breaker", status: data?.Condenser_fan_circuit_breaker_I0_7 },
+        { id: "I1.0", description: "Low pressure fault", status: data?.Low_pressure_fault_I1_0 },
+        { id: "I1.1", description: "High Pressure Fault", status: data?.High_Pressure_Fault_I1_1 },
+        { id: "I1.2", description: "Three phase monitor fault", status: data?.Three_phase_monitor_fault_I1_2 },
+        { id: "I1.3", description: "Condenser fan door open", status: data?.Condenser_fan_door_open_I1_3 },
+    ];
 
     const s7_200_faultStatus = [
         { id: "1", description: "Blower circuit breaker fault", status: data?.BLOWER_CIRCUIT_BREAKER_FAULT },
@@ -340,7 +357,32 @@ export default function InputsScreen() {
         { id: "I2.7", description: "Spare", status: data?.Spare_I2_7 },
     ];
 
+    const gtpl_144_faultStatus = [
+        { id: "I0.0", description: "Compressor circuit breaker", status: data?.Compressor_circuit_breaker_I0_0 },
+        { id: "I0.1", description: "Compressor module feedback error", status: data?.Compressor_module_feedback_error_I0_1 },
+        { id: "I0.2", description: "Compressor in operation", status: data?.Compressor_in_operation_I0_2 },
+        { id: "I0.3", description: "Compressor oil low", status: data?.Compressor_oil_low_I0_3 },
+        { id: "I0.4", description: "Blower drive fault", status: data?.Blower_drive_fault_I0_4 },
+        { id: "I0.5", description: "Blower drive in operation", status: data?.Blower_drive_in_operation_I0_5 },
+        { id: "I0.6", description: "Blower circuit breaker", status: data?.Blower_circuit_breaker_I0_6 },
+        { id: "I0.7", description: "Condenser fan1 TOP fault", status: data?.Condenser_fan1_TOP_fault_I0_7 },
+        { id: "I1.0", description: "Condenser fan1 circuit breaker", status: data?.Condenser_fan1_circuit_breaker_I1_0 },
+        { id: "I1.1", description: "Spare", status: data?.Spare_I1_1 },
+        { id: "I1.2", description: "Low pressure fault", status: data?.Low_pressure_fault_I1_2 },
+        { id: "I1.3", description: "High Pressure Fault", status: data?.High_Pressure_Fault_I1_3 },
+        { id: "I1.4", description: "Start/stop", status: data?.Start_stop_I1_4 },
+        { id: "I2.0", description: "Three phase monitor fault", status: data?.Three_phase_monitor_fault_I2_0 },
+        { id: "I2.1", description: "Spare", status: data?.Spare_I2_1 },
+        { id: "I2.2", description: "Cond fan2 TOP fault", status: data?.Cond__fan2_TOP_fault_I2_2 },
+        { id: "I2.3", description: "Spare", status: data?.Spare_I2_3 },
+        { id: "I2.4", description: "Spare", status: data?.Spare_I2_4 },
+        { id: "I2.5", description: "Cond fan2 circuit breaker fault", status: data?.Cond__fan2_circuit_breaker_fault_I2_5 },
+        { id: "I2.6", description: "Spare", status: data?.Spare_I2_6 },
+        { id: "I2.7", description: "Spare", status: data?.Spare_I2_7 },
+    ];
+
     const selectedList =
+        isGTPL118 ? gtpl_118_faultStatus :
         isGT80E ? s7_200_faultStatus :
             isGtpl115 ? gtpl_115_faultStatus :
                 isGtpl124 ? gtpl_124_faultStatus :
@@ -353,7 +395,8 @@ export default function InputsScreen() {
                                             isGTPL138 ? gtpl_138_faultStatus :
                                                 isGTPL061 ? gtpl_061_faultStatus :
                                                     isGTPL139 ? gtpl_139_faultStatus :
-                                                        [];
+                                                        isGTPL144 ? gtpl_144_faultStatus :
+                                                            [];
 
     const activeAlerts = selectedList.filter(item => isStatusFault(item.status)).length;
     const handleBack = () => router.back();
