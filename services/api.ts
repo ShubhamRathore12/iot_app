@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // API service for handling authentication and other API calls
-const BASE_URL = 'http://localhost:3000'; 
+const BASE_URL = 'https://grain-backend-1.onrender.com'; 
 const COOKIES_KEY = 'api_cookies';
 
 interface LoginCredentials {
@@ -81,7 +81,7 @@ class ApiService {
   }
 
   // Helper method to create headers
-  private getHeaders(token?: string, { includeCookies = true }: { includeCookies?: boolean } = {}) {
+  private getHeaders(token?: string) {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     };
@@ -91,7 +91,7 @@ class ApiService {
     }
 
     // Attach cookies to every request (except login which sets them)
-    if (includeCookies && this.cookies) {
+    if (this.cookies) {
       headers['Cookie'] = this.cookies;
     }
 
@@ -104,7 +104,7 @@ class ApiService {
     try {
       const response = await fetch(`${this.baseUrl}/api/login`, {
         method: 'POST',
-        headers: this.getHeaders(undefined, { includeCookies: false }),
+        headers: this.getHeaders(),
         body: JSON.stringify({
           username: credentials.username, // Using email field in credentials
           password: credentials.password,
