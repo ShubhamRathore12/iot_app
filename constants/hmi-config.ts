@@ -131,6 +131,12 @@ export const MACHINE_HMI_CONFIG: Record<string, MachineHMIConfig> = {
     compressor: DEFAULT_COMPRESSOR,
     hasCRValves: true,
   },
+  "GTPL-144-GT-300AP-S7-1200": {
+    serialNumber: "GTPL_144_GT_300AP_S7_1200",
+    temperatureSensors: AP_TEMP_SENSORS,
+    controls: { ...AP_CONTROLS_TYPO, COND: { key: "Condenser_fan_speed", label: "Condenser Fan" } },
+    compressor: DEFAULT_COMPRESSOR,
+  },
 
   // ── S7-1200 T-series (large tonnage) ───────────────────────────────────
   "GTPL-122-gT-1000T-S7-1200": {
@@ -164,7 +170,6 @@ export const MACHINE_HMI_CONFIG: Record<string, MachineHMIConfig> = {
       BLOWER: { key: "Blower_speed", label: "Blower" },
     },
     compressor: DEFAULT_COMPRESSOR,
-    hasCRValves: true,
   },
   "GTPL-133-GT-650T-S7-1200": {
     serialNumber: "GTPL_133",
@@ -193,12 +198,11 @@ export const MACHINE_HMI_CONFIG: Record<string, MachineHMIConfig> = {
     temperatureSensors: AP_TEMP_SENSORS,
     controls: {
       HGS: { key: "Hot_valve_speed", label: "Hot Gas(HGS)" },
+      AHT: { key: "AHT_valve_speed", label: "After Heat(AHT)" },
       BLOWER: { key: "Blower_speed", label: "Blower" },
       COND: { key: "Cond_fan_speed", label: "Condenser Fan" },
-      AHT: { key: "AHT_valve_speed", label: "After Heat(AHT)" },
     },
     compressor: DEFAULT_COMPRESSOR,
-    hasCRValves: true,
   },
   "GTPL-138-GT-450T-S7-1200": {
     serialNumber: "GTPL_138",
@@ -210,7 +214,6 @@ export const MACHINE_HMI_CONFIG: Record<string, MachineHMIConfig> = {
       COND: { key: "Cond_fan_speed", label: "Condenser Fan" },
     },
     compressor: DEFAULT_COMPRESSOR,
-    hasCRValves: true,
   },
   "GTPL-145-GT-450T-S7-1200": {
     serialNumber: "GTPL_145",
@@ -232,7 +235,6 @@ export const MACHINE_HMI_CONFIG: Record<string, MachineHMIConfig> = {
       BLOWER: { key: "Blower_speed", label: "Blower" },
     },
     compressor: DEFAULT_COMPRESSOR,
-    hasCRValves: true,
   },
   "GTPL-134-gT-450T-S7-1200": {
     serialNumber: "GTPL_134",
@@ -309,9 +311,18 @@ export const MACHINE_HMI_CONFIG: Record<string, MachineHMIConfig> = {
   // ── S7-200 Machines ────────────────────────────────────────────────────
   "GTPL-118-gT-60T-S7-200": {
     serialNumber: "GTPL_118",
-    temperatureSensors: S7_200_TEMP_SENSORS,
-    controls: S7_200_CONTROLS,
-    compressor: S7_200_COMPRESSOR,
+    temperatureSensors: {
+      T2: { key: "T2_temp_mean", label: "Ambient(T2)" },
+      T1: { key: "T1_temp_mean", label: "Cold Air(T1)" },
+      T0: { key: "T0_temp_mean", label: "After Heat(T0)" },
+    },
+    controls: {
+      BLOWER: { key: "Blower_speed", label: "Blower" },
+      COND: { key: "Condenser_fan_speed", label: "Condenser Fan" },
+      HGS: { key: "Hot_valve_speed", label: "Hot Gas(HGS)" },
+      AHT: { key: "AHT_vale_speed", label: "After Heat(AHT)" },
+    },
+    compressor: DEFAULT_COMPRESSOR,
   },
   "GTPL-108-gT-40E-P-S7-200": {
     serialNumber: "GTPL_108",
@@ -424,9 +435,18 @@ export const GRAIN_MACHINE_HMI_CONFIG: Record<string, MachineHMIConfig> = {
   "GTPL-139-GT-300AP-S7-1200": {
     serialNumber: "GTPL_139_GRAIN",
     temperatureSensors: AP_TEMP_SENSORS,
-    controls: GRAIN_AP_CONTROLS_TYPO,
+    controls: {
+      AHT: { key: "AHT_vale_speed", label: "After Heat(AHT)" },
+      HGS: { key: "Hot_valve_speed", label: "Hot Gas(HGS)" },
+    },
     compressor: DEFAULT_COMPRESSOR,
     hasCRValves: true,
+  },
+  "GTPL-144-GT-300AP-S7-1200": {
+    serialNumber: "GTPL_144_GRAIN",
+    temperatureSensors: AP_TEMP_SENSORS,
+    controls: GRAIN_AP_CONTROLS_TYPO,
+    compressor: DEFAULT_COMPRESSOR,
   },
   "GTPL-142-gT-450AP-S7-1200": {
     serialNumber: "GTPL_142_GRAIN",
@@ -479,6 +499,12 @@ export const PADDY_MACHINE_HMI_CONFIG: Record<string, MachineHMIConfig> = {
     compressor: DEFAULT_COMPRESSOR,
     hasCRValves: true,
   },
+  "GTPL-144-GT-300AP-S7-1200": {
+    serialNumber: "GTPL_144_PADDY",
+    temperatureSensors: AP_TEMP_SENSORS,
+    controls: GRAIN_AP_CONTROLS_TYPO,
+    compressor: DEFAULT_COMPRESSOR,
+  },
   "GTPL-142-gT-450AP-S7-1200": {
     serialNumber: "GTPL_142_PADDY",
     temperatureSensors: AP_TEMP_SENSORS,
@@ -512,6 +538,7 @@ export const GRAIN_PADDY_DEVICES = [
   "GTPL-132-300-AP-S7-1200",
   "GTPL-136-gT-450AP",
   "GTPL-139-GT-300AP-S7-1200",
+  "GTPL-144-GT-300AP-S7-1200",
   "GTPL-142-gT-450AP-S7-1200",
   "GTPL-143-gT-450AP-S7-1200",
   "GTPL-123-GT-450AP",
@@ -557,15 +584,11 @@ export const AUTO_CR_VALVE_DEVICES = [
   ...CR_VALVE_DEVICES,
   "GTPL-121-gT-1000T-S7-1200",
   "GTPL-122-gT-1000T-S7-1200",
-  "GTPL-124-GT-450T-S7-1200",
   "GTPL-133-GT-650T-S7-1200",
   "GTPL-131-GT-650T-S7-1200",
   "GTPL-134-gT-450T-S7-1200",
   "GTPL-135-gT-450T-S7-1200",
-  "GTPL-137-GT-450T-S7-1200",
-  "GTPL-138-GT-450T-S7-1200",
-  "GTPL-145-GT-450T-S7-1200",
-  "GTPL-148-GT-450T-S7-1200",
+  "GTPL-145-gT-450T-S7-1200",
   "GTPL-061-gT-450T-S7-1200",
 ];
 
