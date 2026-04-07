@@ -99,7 +99,7 @@ const allDevices: Device[] = [
 // locations are now computed dynamically inside the component based on monitorAccess
 
 const deviceNameToStatusKey: Record<string, string> = {
-  'GTPL-122-gT-1000T-S7-1200': 'GTPL_122_S7_1200',
+  'GTPL-122-gT-1000T-S7-1200': 'GTPL_122',
   'GTPL-118-gT-60T-S7-200': 'KABO_200',
   'GTPL-108-gT-40E-P-S7-200': 'GTPL_108',
   'GTPL-109-gT-40E-P-S7-200': 'GTPL_109',
